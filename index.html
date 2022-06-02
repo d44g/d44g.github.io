@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <style>
+        .row { display: flex; }
+        .column { flex: 50%; }
+        label { width: 110px; }
+    </style>
+</head>
+
+<body>
+    <main role="main" class="container">
+        <div>
+            <h1>Web Video Tester</h1>
+            <hr>
+            <div class="row">
+                <div class="column test" style="padding: 16px;">
+                    <p>Please select the test to run:</p>
+                    <input type="radio" id="annexb" name="testName" value="annexb" checked>
+                    <label id="annexblabel" for="annexb">Annex B H.264</label><br>
+                    <input type="radio" id="avcc" name="testName" value="avcc">
+                    <label id="avcclabel" for="avcc">AVCC H.264</label><br>
+                    <input type="radio" id="mp4" name="testName" value="mp4">
+                    <label for="mp4">MP4</label><br>
+                    <input type="button" id="btnTestChoice" class="btn btn-primary" onclick="prepareTest()" value="Setup Test" />
+                </div>
+                <div class="column controls" style="display:none; padding: 16px;">
+                    <h3>Press 'Run Videos' to begin test: </h3> <h3 id="currentTest"></h3> <br>
+                    <h5 id="testMessage"></h5>
+                </div>
+            </div>
+            <div class="submitform" style="display:none; padding: 16px; border:1px solid #ccc"></div>
+            <hr>
+            <div class="row fingerprint" style="display:none; padding: 16px;">
+                <div>
+                    <h3 id="statusmessage">Status</h3>
+                    <div id="realtimeconsole" style="height:200px;width:800px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;"></div>
+                </div>
+                <hr>
+                <div class="col-sm data border border-secondary">
+                    <h2>Video Frames</h2>
+                    <div id="visual" class="visual"></div>
+                    <h2>Frame Hashes</h2>
+                    <div id="hashes" class="hashes"></div>
+                </div>
+            </div>
+        </div>
+        <canvas id="glcanvas" width="0" height="0"></canvas>
+    </main>
+
+    <script src="js/html2canvas.min.js"></script>
+    <script src="js/fp.js"></script>
+</body>
+
+</html>
