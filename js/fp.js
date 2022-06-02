@@ -9,6 +9,7 @@ var AVCCMODE = false;
 
 // Control videos
 let startTime;
+let stepVideo = false;
 
 // Decoding variables
 let assetURLs = [];
@@ -287,34 +288,8 @@ async function runAllVideos() {
     startTime = performance.now();
 
     if (MP4MODE) {
-        buttonNext.removeAttribute("disabled");
-
-        current = 0;
-        video = document.createElement('video');
-        video.setAttribute("autoplay", "true");
-        video.addEventListener('canplay', function () {
-            console.log("canplay");
-        });
-        video.addEventListener('play', function () {
-            console.log("play");
-        });
-        video.addEventListener('stalled', function () {
-            console.log("stalled");
-        });
-        video.addEventListener('ended', function () {
-            console.log("ended");
-            setTimeout(getHash, 100);
-        });
-        video.addEventListener('error', function () {
-            console.log("error with video " + assetURLs[current]);
-            console.log(video.error);
-            console.log(video.error.message);
-
-            //current += 1;
-            //loadAsset();
-        });
-        
-        //loadAsset();
+        //current = 0;
+        loadAsset();
     } else {
         const config = {
             codec: "avc1.64000a",
@@ -423,34 +398,78 @@ function loadControls() {
     buttonStart.setAttribute("type", "button");
     buttonStart.setAttribute("id", "btnStart");
     buttonStart.setAttribute("class", "btn btn-primary");
-    buttonStart.innerHTML = "Run Videos";
+    buttonStart.innerHTML = "Setup Videos";
     buttonStart.addEventListener("click", function () {
         logUserAgentAndGPU();
 
-        buttonStart.setAttribute("disabled", "true");
+        //buttonStart.setAttribute("disabled", "true");
         document.querySelector(".fingerprint").style.display = "block";
 
         var status = document.getElementById("statusmessage");
         status.innerHTML = "Status: Working";
 
-        runAllVideos();
+        
     });
     document.querySelector(".controls").appendChild(buttonStart);
 
+    buttonRunAll = document.createElement("button");
+    buttonRunAll.setAttribute("type", "button");
+    buttonRunAll.setAttribute("class", "btn btn-primary");
+    //buttonStart.setAttribute("id", "btnNext");
+    //buttonNext.setAttribute("disabled", "true");
+    buttonRunAll.innerHTML = "Run All Videos";
+    buttonRunAll.addEventListener("click", function () {
+        console.log("[-] 'Running all Videos");
+        stepVideo = false;
+        runAllVideos();
+    });
+    document.querySelector(".controls").appendChild(buttonRunAll);
+
+
     if (MP4MODE) {
-        testMessage.innerHTML += " Only press 'Next Video' if you don't see progress in the Status window.";
+        video = document.createElement('video');
+        video.setAttribute("autoplay", "true");
+        video.addEventListener('canplay', function () {
+            console.log("canplay");
+        });
+        video.addEventListener('play', function () {
+            console.log("play");
+        });
+        video.addEventListener('stalled', function () {
+            console.log("stalled");
+        });
+        video.addEventListener('ended', function () {
+            console.log("ended");
+            setTimeout(getHash, 100);
+        });
+        video.addEventListener('error', function () {
+            console.log("error with video " + assetURLs[current]);
+            console.log(video.error);
+            console.log(video.error.message);
+            if (!stepVideo) {
+                current += 1;
+                loadAsset();
+            }
+            
+        });
+
+        //testMessage.innerHTML += " Only press 'Next Video' if you don't see progress in the Status window.";
         buttonNext = document.createElement("button");
         buttonNext.setAttribute("type", "button");
         buttonNext.setAttribute("class", "btn btn-primary");
-        buttonStart.setAttribute("id", "btnNext");
-        buttonNext.setAttribute("disabled", "true");
-        buttonNext.innerHTML = "Next Video";
+        //buttonStart.setAttribute("id", "btnNext");
+        //buttonNext.setAttribute("disabled", "true");
+        buttonNext.innerHTML = "Step Video";
         buttonNext.addEventListener("click", function () {
-            console.log("[-] 'Next Video' pressed");
+            console.log("[-] 'Step Video' pressed");
+            stepVideo = true;
             current += 1;
             loadAsset();
         });
         document.querySelector(".controls").appendChild(buttonNext);
+
+        
+
     }
 
     document.querySelector(".controls").style.display = "block";
