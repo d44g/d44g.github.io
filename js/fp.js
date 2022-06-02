@@ -310,7 +310,7 @@ async function runAllVideos() {
             console.log(video.error);
             console.log(video.error.message);
 
-            current += 1;
+            //current += 1;
             //loadAsset();
         });
         
